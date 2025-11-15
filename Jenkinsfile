@@ -2,30 +2,27 @@ pipeline {
     agent any
 
     stages {
-        stage('Build imagen Django') {
+        stage('Build') {
             steps {
-                sh '''
-                    cd biblioteca_virtua
-                    docker compose build web
-                '''
-            }
-        }
-
-        stage('Levantar servicios') {
-            steps {
-                sh '''
-                    cd biblioteca_virtua
-                    docker compose up -d
-                '''
+                dir('biblioteca_virtua') {
+                    sh 'docker compose build'
+                }
             }
         }
 
         stage('Migraciones') {
             steps {
-                sh '''
-                    cd biblioteca_virtua
-                    docker compose exec web python manage.py migrate
-                '''
+                dir('biblioteca_virtua') {
+                    sh 'docker compose run web python manage.py migrate'
+                }
+            }
+        }
+
+        stage('Levantar contenedores') {
+            steps {
+                dir('biblioteca_virtua') {
+                    sh 'docker compose up -d'
+                }
             }
         }
     }

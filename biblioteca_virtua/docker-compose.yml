@@ -1,3 +1,5 @@
+version: '3.8'
+
 services:
   db:
     image: mysql:8.0
@@ -19,19 +21,19 @@ services:
       retries: 10
 
   web:
-    build: ./biblioteca_virtua
+    build: .                    # <-- build en la carpeta actual (biblioteca_virtua)
     container_name: django_app
     command: python manage.py runserver 0.0.0.0:8000
     depends_on:
       db:
         condition: service_healthy
     volumes:
-      - ./biblioteca_virtua:/app
+      - .:/app                  # <-- monta la carpeta actual en /app
     ports:
       - "8000:8000"
 
   jenkins:
-    build: ./jenkins
+    build: ../jenkins           # <-- la carpeta jenkins está fuera de biblioteca_virtua
     container_name: jenkins_ci
     privileged: true
     user: root
