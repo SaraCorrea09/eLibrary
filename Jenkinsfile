@@ -2,12 +2,6 @@ pipeline {
     agent any
 
     stages {
-        stage('Clonar repositorio') {
-            steps {
-                git branch: 'main', url: 'https://github.com/jhossedmolina/eLibrary.git'
-            }
-        }
-
         stage('Build imagen Django') {
             steps {
                 sh 'docker compose build web'
