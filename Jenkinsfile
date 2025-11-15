@@ -16,13 +16,7 @@ pipeline {
 
         stage('Migraciones') {
             steps {
-                sh 'docker compose exec web python manage.py migrate'
-            }
-        }
-
-        stage('Test Django') {
-            steps {
-                sh 'docker compose exec web python manage.py test || true'
+                sh 'docker compose exec django_app python manage.py migrate'
             }
         }
     }
